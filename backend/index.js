@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require("cors")
 const { createTodo, updateTodo } = require('./typezod');
 const { todo } = require('./db');
 const app = express()
@@ -6,6 +7,7 @@ const PORT = 3000;
 
 
 app.use(express.json()) // express.json() -> middleware
+app.use(cors())
 
 
 app.post("/todo", async (req,res) => {
