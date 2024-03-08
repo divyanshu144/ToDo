@@ -6,7 +6,7 @@ const app = express()
 app.use(express.json()) // express.json() -> middleware
 
 
-app.post("/todo", (req,res) => {
+app.post("/todo", async (req,res) => {
 
     const createPayload = req.body;
     const parsedPayload = createTodo.safeParse(createPayload);
@@ -17,15 +17,23 @@ app.post("/todo", (req,res) => {
         return;
     }
     //put it in mongodb
+    await todo.create({
+        title: createPayload.title,
+        description: createPayload.description,
+        completed: false
+    })
+
+    res.json({
+        msg: "Todo created"
+    })
 })
 
-app.get("/todos", (req,res) => {
+app.get("/todos", async (req,res) => {
 
-    
-    
+    const todos = await todo.find({});
 })
 
-app.put("/completed", (req,res) => {
+app.put("/completed", async (req,res) => {
 
     const updatePayload = req.body;
     const parsedPayload = updateTodo.safeParse(updatePayload);
@@ -36,5 +44,10 @@ app.put("/completed", (req,res) => {
         return
     }
     //mongodb
+    await todo.update({
+        _id: req.body.id
+    }, {
+        completed: true
+    })
     
 })
