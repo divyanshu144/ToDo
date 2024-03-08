@@ -1,6 +1,8 @@
 const express = require('express');
 const { createTodo, updateTodo } = require('./typezod');
+const { todo } = require('./db');
 const app = express()
+const PORT = 3000;
 
 
 app.use(express.json()) // express.json() -> middleware
@@ -50,4 +52,8 @@ app.put("/completed", async (req,res) => {
         completed: true
     })
     
+})
+
+app.listen(PORT, (req,res) => {
+    console.log("server listening at port", PORT)
 })
